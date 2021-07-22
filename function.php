@@ -4,7 +4,7 @@
 /*------------------function recup des articles--------------------*/
 
 function getArticles(){
-    
+   /* je stock mes articles dans la funtion */ 
    return [
         
         $ps5 = [
@@ -35,13 +35,14 @@ function getArticles(){
      
 }
 
+//je recupere mes articles stocké dans ma function getARticles puis je boucle sur la function pour les afficher a l'unité 
 /*------------------function affichage des articles--------------------*/
-
 function showArticles(){
+    
 
     $articles = getArticles();
 
-   foreach($articles as $article){
+    foreach($articles as $article){
 
        echo "<img src=\"" .$article['img']. "\" alt=\"photo" .$article['name']. "\" width=\"50\" height=\"50\">
         <h1>" .$article['name']. "</h1> 
@@ -80,9 +81,9 @@ function showArticle($id){
     <h1>" .$article['name']. "</h1> 
     <h2>" .$article['slogan']. "</h2> 
     <h3>" .$article['price']. "</h3> 
-    <form method=\"post\" action=\"produit.php/\"".$article['id']."\">
-    <input type=\"hidden\" name=\"articleId\" value=\"" .$article['id']."\">
-    <button type=\"submit\" class=\"btn btn-primary\">Ajouter au panier</button>
+    <form method=\"post\" action=\"panier.php\"".$article['id']."\">
+            <input type=\"hidden\" name=\"articlePanierId\" value=\"" .$article['id']."\">
+        <button type=\"submit\" class=\"btn btn-primary\">Ajouter au panier</button>
     </form>"
     ;
 }
@@ -106,13 +107,51 @@ function addToCart($id){
 }
 
 function showArticlePanier(){
+    $i = 0;
     foreach($_SESSION['cart'] as $article)
-    echo "<img src=\"" .$article['img']. "\" alt=\"photo" .$article['name']. "\" width=\"50\" height=\"50\">
+    echo "
+    <div>
+    <img src=\"" .$article['img']. "\" alt=\"photo" .$article['name']. "\" width=\"50\" height=\"50\">
     <h1>" .$article['name']. "</h1> 
     <h2>" .$article['slogan']. "</h2> 
-    <h3>" .$article['price']. "</h3>"
+    <h3>" .$article['price']. "</h3>
+    <form method=\"post\" action=\"panier.php\"\">
+    <input type=\"hidden\" name=\"modifyArticleId\" value=\"" .$article['id']."\">
+    <input type=\"text\" size=\"1\" name=\"newQantity\" value=\"".$article['qty']."\"/>
+    <button type=\"submit\" class=\"btn btn-primary\">changer qantiter</button>
+    </form>
+    <form method=\"post\" action=\"panier.php\"\">
+    <input type=\"submit\" name=\"deleteBtn".$article['id']."\" value=\"X\"/>
+    <input type=\"hidden\" name=\"index_to_remove\" value=\"".$i."\"/>
+    </form>
+    </div>"
     ;
+    $i++;
 
+}
+
+function changeQantity(){
+
+    for ($i = 0; $i < count($_SESSION['cart']); $i++){
+       
+        if($_SESSION['cart'][$i]["id"] == $_POST['modifyArticleId']){
+            $_SESSION['cart'][$i]["qty"] = $_POST['newQantity'];
+        }
+
+    }
+}
+
+function deleteArticle(){
+
+    $deleteId = $_POST['index_to_remove'];
+    echo 'index-'.$deleteId. ':Count -';
+    if(count($_SESSION['cart'])<= 1){
+        unset($session['cart']);
+    } else{
+        unset($session['cart']['$deletId']);
+        sort($_SESSION['cart']);
+        echo count($_SESSION['cart']);
+    }
 }
 
 ?>
