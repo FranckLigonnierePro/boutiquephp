@@ -44,19 +44,28 @@ function showArticles(){
 
     foreach($articles as $article){
 
-       echo "<img src=\"" .$article['img']. "\" alt=\"photo" .$article['name']. "\" width=\"50\" height=\"50\">
-        <h1>" .$article['name']. "</h1> 
-        <h2>" .$article['slogan']. "</h2> 
-        <h3>" .$article['price']. "</h3> 
-        <form method=\"post\" action=\"produit.php/\"".$article['id']."\">
-            <input type=\"hidden\" name=\"articleId\" value=\"" .$article['id']."\">
-            <button type=\"submit\" class=\"btn btn-primary\">Description</button>
-        </form>
-            <form method=\"post\" action=\"panier.php\"".$article['id']."\">
-            <input type=\"hidden\" name=\"articlePanierId\" value=\"" .$article['id']."\">
-        <button type=\"submit\" class=\"btn btn-primary\">Ajouter au panier</button>
-        </form>"
+       echo 
+       "
+                <div class=\"card shadow-sm \">
+                    <div class=\"card \" style=\"width: 18rem;\">
+                        <img class=\"card-img-top\" src=\"" .$article['img']. "\" alt=\"photo" .$article['name']. "\" width=\"\" height=\"\">
+                    <div class=\"card-body\">
+                                <h1>" .$article['name']. "</h1> 
+                                <h2>" .$article['slogan']. "</h2> 
+                                <h3>" .$article['price']. "</h3> 
+                        <form method=\"post\" action=\"produit.php/\"".$article['id']."\">
+                            <input type=\"hidden\" name=\"articleId\" value=\"" .$article['id']."\">
+                            <button type=\"submit\" class=\"btn btn-sm btn-outline-secondary\">Description</button>
+                        </form>
+                            <form method=\"post\" action=\"panier.php\"".$article['id']."\">
+                            <input type=\"hidden\" name=\"articlePanierId\" value=\"" .$article['id']."\">
+                        <button type=\"submit\" class=\"btn btn-sm btn-outline-secondary\">Ajouter au panier</button>
+                        </form>
+                    </div>
+                    </div>
+                </div>"
         ;
+
    }
 }
 
@@ -107,7 +116,7 @@ function addToCart($id){
 }
 
 function showArticlePanier(){
-    $i = 0;
+    
     foreach($_SESSION['cart'] as $article)
     echo "
     <div>
@@ -121,12 +130,12 @@ function showArticlePanier(){
     <button type=\"submit\" class=\"btn btn-primary\">changer qantiter</button>
     </form>
     <form method=\"post\" action=\"panier.php\"\">
-    <input type=\"submit\" name=\"deleteBtn".$article['id']."\" value=\"X\"/>
-    <input type=\"hidden\" name=\"index_to_remove\" value=\"".$i."\"/>
+    <input type=\"hidden\" name=\"index_to_remove\" value=\"".$article['id']."\"/>
+    <input type=\"submit\" name=\"deleteBtn\" value=\"X\"/>
     </form>
     </div>"
     ;
-    $i++;
+    
 
 }
 
@@ -141,17 +150,59 @@ function changeQantity(){
     }
 }
 
-function deleteArticle(){
-
-    $deleteId = $_POST['index_to_remove'];
-    echo 'index-'.$deleteId. ':Count -';
-    if(count($_SESSION['cart'])<= 1){
-        unset($session['cart']);
-    } else{
-        unset($session['cart']['$deletId']);
-        sort($_SESSION['cart']);
-        echo count($_SESSION['cart']);
+function deleteArticle($itemRemove){
+for($i = 0; $i < count($_SESSION['cart']); $i++){
+    if ($itemRemove == $_SESSION['cart'][$i]['id']) {
+        array_splice($_SESSION['cart'],$i,1);
+        echo "article supprimé";
     }
 }
+
+function btnSupLePanier(){
+    echo "<form method=\"post\" action=\"panier.php\"\">
+    <input type=\"hidden\" name=\"supLePanier\"/>
+    <button type=\"submit\">supprimer le panier</button>
+    </form>"
+    ;
+}
+
+
+function supLePanier(){
+    $_SESSION['cart']=[];
+}
+}
+
+function totalArticle(){
+    $total = 0;
+    foreach($_SESSION['cart'] as $article){
+        $total += $article['price'] * $article['qty'];
+    }
+    return $total;
+}
+
+function fdp(){
+    
+    $totalFdp = 0;
+    foreach($_SESSION['cart'] as $article){
+        $totalFdp += 5 * $article['qty'];
+    }
+    return $totalFdp;
+    
+}
+
+function totalArticlefdp(){
+    return totalArticle() + fdp();
+}
+
+
+function validation(){
+    echo "<form method=\"post\" action=\"index.php\"\">
+    <input type=\"hidden\" name=\"validation\"/>
+    <button type=\"submit\">valider la commande</button>
+    </form>"
+    ;
+}
+
+
 
 ?>

@@ -1,14 +1,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
-body{
-    font-family: 'Oswald', sans-serif;
+.bgAccueil {
+    background-image: url(../images/bg.jpg);
+    background-size: cover;
+    height: 30vh;
 }
 
-h1,h2,p{
-    font-family: 'Oswald', sans-serif;
+.custom-toggler.navbar-toggler{
+ border-color: transparent;
 }
 
-.top{
-    height:10vh;
-    background-color: aquamarine;
+.custom-toggler.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255)' stroke-width='2'  stroke-miterlimit='15' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
+
+.custom-toggler.navbar-toggler:focus,.custom-toggler.navbar-toggler:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
